@@ -110,7 +110,7 @@ export default function Modal({children, show, opacity, closeModal}) {
   }, [offset])
 
   return (
-    <SLightbox show={show} offset={offset} opacity={opacity} ref={lightboxRef}>
+    <SLightbox show={show} offset={0} opacity={opacity} ref={lightboxRef}>
       <SModalContainer>
         <SHitbox onClick={closeModal} />
 

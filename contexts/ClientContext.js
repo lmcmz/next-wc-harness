@@ -15,7 +15,7 @@ import {
   DEFAULT_RELAY_URL,
 } from "../constants"
 import {ERROR, getAppMetadata} from "@walletconnect/utils"
-import fclWC from "../fcl-wc"
+import fclWC from "fcl-wc"
 
 /**
  * Context

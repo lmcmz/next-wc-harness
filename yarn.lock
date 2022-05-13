@@ -1392,6 +1392,16 @@
   dependencies:
     "reusify" "^1.0.4"
 
+"fcl-wc@file:../../Flow/fcl-wc":
+  "resolved" "file:../../Flow/fcl-wc"
+  "version" "1.0.0"
+  dependencies:
+    "@onflow/config" "^1.0.0"
+    "@walletconnect/client" "^2.0.0-beta.26"
+    "@walletconnect/legacy-modal" "^2.0.0-beta.26"
+    "@walletconnect/types" "^2.0.0-beta.26"
+    "@walletconnect/utils" "^2.0.0-beta.26"
+
 "file-entry-cache@^6.0.1":
   "integrity" "sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg=="
   "resolved" "https://registry.npmjs.org/file-entry-cache/-/file-entry-cache-6.0.1.tgz"

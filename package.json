@@ -9,10 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@onflow/fcl": "^1.0.0-alpha.3",
+    "@onflow/fcl": "file:../../Flow/fcl-js/packages/fcl",
+    "@walletconnect/client": "^2.0.0-beta.26",
+    "@walletconnect/legacy-modal": "^2.0.0-beta.26",
+    "@walletconnect/types": "^2.0.0-beta.26",
+    "@walletconnect/utils": "^2.0.0-beta.26",
     "next": "12.1.5",
     "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react-dom": "18.0.0",
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
     "eslint": "8.13.0",

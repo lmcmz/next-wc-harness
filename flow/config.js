@@ -19,6 +19,13 @@ fcl.config()
   .put("service.OpenID.scopes", "email")
   .put("fcl.accountProof.resolver", resolver)
 
+const DEFAULT_APP_METADATA = {
+  name: "Flow App",
+  description: "Flow DApp for WalletConnect",
+  url: "https://testFlow.com/",
+  icons: ["https://avatars.githubusercontent.com/u/62387156?s=280&v=4"],
+}
+
 if (USE_LOCAL) {
   // prettier-ignore
   fcl
@@ -27,7 +34,10 @@ if (USE_LOCAL) {
     .put("logger.level", 2)
     .put("flow.network", "local")
     .put("accessNode.api", "http://localhost:8888")
-    .put("discovery.wallet", "http://localhost:8701/fcl/authn")
+    //.put("discovery.wallet", "http://localhost:8701/fcl/authn")
+    .put("discovery.wallet", "http://localhost:3000/testnet/authn")
+    .put("wc.projectId",  "6427e017c4bd829eef203702a51688b0")
+    .put("wc.adapter", null)
 } else {
   // prettier-ignore
   fcl

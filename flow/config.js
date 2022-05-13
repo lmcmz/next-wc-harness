@@ -1,5 +1,10 @@
 import * as fcl from "@onflow/fcl"
 import getConfig from "next/config"
+import fclWC from "fcl-wc"
+
+// Initalize fclWC Adapter
+const getAdapter = async () =>
+  await fclWC.init(process.env.NEXT_PUBLIC_PROJECT_ID)
 
 const USE_LOCAL = true
 const resolver = async () => ({
@@ -36,8 +41,8 @@ if (USE_LOCAL) {
     .put("accessNode.api", "http://localhost:8888")
     //.put("discovery.wallet", "http://localhost:8701/fcl/authn")
     .put("discovery.wallet", "http://localhost:3000/testnet/authn")
-    .put("wc.projectId",  "6427e017c4bd829eef203702a51688b0")
-    .put("wc.adapter", null)
+    .put("wc.projectId", "6427e017c4bd829eef203702a51688b0")
+    .put("wc.adapter", getAdapter())
 } else {
   // prettier-ignore
   fcl

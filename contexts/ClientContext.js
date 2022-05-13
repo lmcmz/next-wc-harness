@@ -7,14 +7,8 @@ import {
   useState,
 } from "react"
 
-import {
-  DEFAULT_APP_METADATA,
-  DEFAULT_FLOW_METHODS,
-  DEFAULT_LOGGER,
-  DEFAULT_PROJECT_ID,
-  DEFAULT_RELAY_URL,
-} from "../constants"
-import {ERROR, getAppMetadata} from "@walletconnect/utils"
+import {DEFAULT_APP_METADATA} from "../constants"
+import * as fcl from "@onflow/fcl"
 import fclWC from "fcl-wc"
 
 /**
@@ -53,18 +47,9 @@ export function ClientContextProvider({children}) {
       if (typeof client === "undefined") {
         throw new Error("WalletConnect is not initialized")
       }
-      console.log("connect", pairing, DEFAULT_APP_METADATA)
       try {
         const session = await client.connect({
-          // metadata: getAppMetadata() || DEFAULT_APP_METADATA,
-          metadata: {
-            name: "Flow App",
-            description: "Flow DApp for WalletConnect",
-            url: "https://testFlow.com/",
-            icons: [
-              "https://avatars.githubusercontent.com/u/62387156?s=280&v=4",
-            ],
-          },
+          metadata: DEFAULT_APP_METADATA,
           pairing,
           permissions: {
             blockchain: {
@@ -77,6 +62,7 @@ export function ClientContextProvider({children}) {
         })
 
         onSessionConnected(session)
+        fclWC.QRCodeModal.close()
       } catch (e) {
         console.error(e)
       }
@@ -95,7 +81,7 @@ export function ClientContextProvider({children}) {
     }
     await client.disconnect({
       topic: session.topic,
-      reason: ERROR.USER_DISCONNECTED.format(),
+      reason: fclWC.ERROR.USER_DISCONNECTED.format(),
     })
   }, [client, session])
 
@@ -150,16 +136,11 @@ export function ClientContextProvider({children}) {
   const createClient = useCallback(async () => {
     try {
       setIsInitializing(true)
-
-      const _client = await fclWC.Client.init({
-        logger: DEFAULT_LOGGER,
-        relayUrl: DEFAULT_RELAY_URL,
-        projectId: DEFAULT_PROJECT_ID,
-      })
-      console.log("Client Initialized", _client)
-      setClient(_client)
-      await _subscribeToEvents(_client)
-      await _checkPersistedState(_client)
+      const {client} = await fcl.config.get("wc.adapter")
+      console.log("Client Initialized", client)
+      setClient(client)
+      await _subscribeToEvents(client)
+      await _checkPersistedState(client)
     } catch (err) {
       throw err
     } finally {

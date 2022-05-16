@@ -32,6 +32,10 @@ export default function Home() {
   const {client, session, connect, disconnect, isInitializing} =
     useWalletConnectClient()
 
+  console.log(
+    "APP SESH",
+    client?.session?.settled?.sequences.values().next().value
+  )
   // Use `JsonRpcContext` to provide us with relevant RPC methods and states.
   const {ping, isRpcRequestPending, rpcResult} = useJsonRpc()
 
@@ -94,7 +98,14 @@ export default function Home() {
       </SConnectButton>
       <ul>{COMMANDS.map(renderCommand)}</ul>
 
-      <pre>{session && JSON.stringify({session}, null, 2)}</pre>
+      <pre>
+        {client?.session?.topics &&
+          JSON.stringify(
+            client?.session?.settled?.sequences.values().next().value,
+            null,
+            2
+          )}
+      </pre>
       <pre>{JSON.stringify({currentUser, config}, null, 2)}</pre>
       <Modal show={!!modal} closeModal={closeModal}>
         {renderModal()}

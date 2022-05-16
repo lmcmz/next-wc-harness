@@ -9,7 +9,7 @@ import {
 
 import {DEFAULT_APP_METADATA} from "../constants"
 import * as fcl from "@onflow/fcl"
-import fclWC from "fcl-wc"
+import fclWC from "@onflow/fcl-wc"
 
 /**
  * Context
@@ -40,6 +40,7 @@ export function ClientContextProvider({children}) {
   const onSessionConnected = useCallback(async _session => {
     setSession(_session)
     setAccounts(_session.state.accounts)
+    console.log("Session connected", _session)
   }, [])
 
   const connect = useCallback(
@@ -104,12 +105,12 @@ export function ClientContextProvider({children}) {
       })
 
       _client.on(fclWC.CLIENT_EVENTS.session.updated, updatedSession => {
-        console.log("EVENT", "session_updated")
+        console.log("SESSION EVENT", "session_updated")
         onSessionConnected(updatedSession)
       })
 
       _client.on(fclWC.CLIENT_EVENTS.session.deleted, () => {
-        console.log("EVENT", "session_deleted")
+        console.log("SESSION EVENT", "session_deleted")
         reset()
       })
     },

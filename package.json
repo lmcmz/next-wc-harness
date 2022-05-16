@@ -10,11 +10,11 @@
   },
   "dependencies": {
     "@onflow/fcl": "file:../../Flow/fcl-js/packages/fcl",
+    "@onflow/fcl-wc": "file:../../Flow/fcl-js/packages/fcl-wc",
     "@walletconnect/client": "^2.0.0-beta.26",
     "@walletconnect/legacy-modal": "^2.0.0-beta.26",
     "@walletconnect/types": "^2.0.0-beta.26",
     "@walletconnect/utils": "^2.0.0-beta.26",
-    "fcl-wc": "file:../../Flow/fcl-js/packages/fcl-wc",
     "next": "12.1.5",
     "react": "18.0.0",
     "react-dom": "18.0.0",

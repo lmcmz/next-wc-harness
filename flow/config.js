@@ -1,6 +1,6 @@
 import * as fcl from "@onflow/fcl"
 import getConfig from "next/config"
-import fclWC from "fcl-wc"
+import fclWC from "@onflow/fcl-wc"
 
 // Initalize fclWC Adapter
 const getAdapter = async () =>

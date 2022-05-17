@@ -1,16 +1,16 @@
 import {useState, useEffect} from "react"
 import "../flow/config"
-import {COMMANDS} from "../cmds"
 import useCurrentUser from "../hooks/use-current-user"
 import useConfig from "../hooks/use-config"
-import {useWalletConnectClient} from "../contexts/ClientContext"
-import {useJsonRpc} from "../contexts/JsonRpcContext"
 import Header from "../components/Header"
 import Modal from "../components/Modal"
 import PairingModal from "../components/PairingModal"
 import PingModal from "../components/PingModal"
 import RequestModal from "../components/RequestModal"
+import {COMMANDS} from "../cmds"
 import {SConnectButton} from "../components/shared"
+import {useJsonRpc} from "../contexts/JsonRpcContext"
+import {useWalletConnectClient} from "../contexts/ClientContext"
 
 const renderCommand = d => {
   return (
@@ -32,10 +32,6 @@ export default function Home() {
   const {client, session, connect, disconnect, isInitializing} =
     useWalletConnectClient()
 
-  console.log(
-    "APP SESH",
-    client?.session?.settled?.sequences.values().next().value
-  )
   // Use `JsonRpcContext` to provide us with relevant RPC methods and states.
   const {ping, isRpcRequestPending, rpcResult} = useJsonRpc()
 
@@ -106,7 +102,7 @@ export default function Home() {
             2
           )}
       </pre>
-      <pre>{JSON.stringify({currentUser, config}, null, 2)}</pre>
+      <pre>{JSON.stringify({currentUser}, null, 2)}</pre>
       <Modal show={!!modal} closeModal={closeModal}>
         {renderModal()}
       </Modal>

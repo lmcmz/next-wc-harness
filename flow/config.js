@@ -3,8 +3,10 @@ import getConfig from "next/config"
 import fclWC from "@onflow/fcl-wc"
 
 // Initalize fclWC Adapter
-const getAdapter = async () =>
+/* const getAdapter = async () =>
   await fclWC.init(process.env.NEXT_PUBLIC_PROJECT_ID)
+
+getAdapter().then(a => console.log("adapater from config", a)) */
 
 const USE_LOCAL = true
 const resolver = async () => ({
@@ -18,11 +20,14 @@ const FCL_CRYPTO_CONTRACT_ADDR =
   publicRuntimeConfig.fclCryptoContract
 
 // prettier-ignore
-fcl.config()
+fcl
+  .config()
   .put("app.detail.title", "Test Harness")
   .put("app.detail.icon", "https://placekitten.com/g/200/200")
   .put("service.OpenID.scopes", "email")
   .put("fcl.accountProof.resolver", resolver)
+  .put("wc.projectId", "6427e017c4bd829eef203702a51688b0")
+// .put("wc.adapter", getAdapter())
 
 const DEFAULT_APP_METADATA = {
   name: "Flow App",
@@ -41,8 +46,6 @@ if (USE_LOCAL) {
     .put("accessNode.api", "http://localhost:8888")
     //.put("discovery.wallet", "http://localhost:8701/fcl/authn")
     .put("discovery.wallet", "http://localhost:3000/testnet/authn")
-    .put("wc.projectId", "6427e017c4bd829eef203702a51688b0")
-    .put("wc.adapter", getAdapter())
 } else {
   // prettier-ignore
   fcl

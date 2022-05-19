@@ -27,7 +27,7 @@ fcl
   .put("service.OpenID.scopes", "email")
   .put("fcl.accountProof.resolver", resolver)
   .put("wc.projectId", "6427e017c4bd829eef203702a51688b0")
-// .put("wc.adapter", getAdapter())
+// .put("discovery.wc.adapter", getAdapter())
 
 const DEFAULT_APP_METADATA = {
   name: "Flow App",

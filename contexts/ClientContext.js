@@ -101,7 +101,13 @@ export function ClientContextProvider({children}) {
       })
 
       _client.on(fclWC.CLIENT_EVENTS.pairing.created, async () => {
+        console.log("PAIRING EVENT", "pairing_updated")
         setPairings(_client.pairing.topics)
+      })
+
+      _client.on(fclWC.CLIENT_EVENTS.session.created, updatedSession => {
+        console.log("SESSION EVENT", "session_created")
+        onSessionConnected(updatedSession)
       })
 
       _client.on(fclWC.CLIENT_EVENTS.session.updated, updatedSession => {

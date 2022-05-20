@@ -94,14 +94,8 @@ export default function Home() {
       </SConnectButton>
       <ul>{COMMANDS.map(renderCommand)}</ul>
 
-      <pre>
-        {client?.session?.topics &&
-          JSON.stringify(
-            client?.session?.settled?.sequences.values().next().value,
-            null,
-            2
-          )}
-      </pre>
+      <pre>{session && JSON.stringify({session}, null, 2)}</pre>
+
       <pre>{JSON.stringify({currentUser}, null, 2)}</pre>
       <Modal show={!!modal} closeModal={closeModal}>
         {renderModal()}

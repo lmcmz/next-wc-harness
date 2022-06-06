@@ -23,8 +23,8 @@ export const DEFAULT_FLOW_METHODS = {
 export const DEFAULT_LOGGER = "debug"
 
 export const DEFAULT_APP_METADATA = {
-  name: "FCL WC Dapp",
-  description: "FCL WC Dapp",
+  name: "FCL WC DApp",
+  description: "FCL WC DApp",
   url: "https://flow.com/",
   icons: ["https://avatars.githubusercontent.com/u/62387156?s=280&v=4"],
 }

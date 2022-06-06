@@ -1,5 +1,4 @@
 import {useState, useEffect} from "react"
-import "../flow/config"
 import useCurrentUser from "../hooks/use-current-user"
 import useConfig from "../hooks/use-config"
 import Header from "../components/Header"
@@ -8,9 +7,9 @@ import PairingModal from "../components/PairingModal"
 import PingModal from "../components/PingModal"
 import RequestModal from "../components/RequestModal"
 import {COMMANDS} from "../cmds"
-import {SConnectButton} from "../components/shared"
 import {useJsonRpc} from "../contexts/JsonRpcContext"
 import {useWalletConnectClient} from "../contexts/ClientContext"
+import "../flow/config"
 
 const renderCommand = d => {
   return (
@@ -89,13 +88,8 @@ export default function Home() {
     <div>
       <Header ping={onPing} disconnect={disconnect} session={session} />
       {isInitializing ? "Loading..." : <div>Wallet Connect Intialized!</div>}
-      <SConnectButton left onClick={onConnect} disabled={isInitializing}>
-        {"Connect"}
-      </SConnectButton>
       <ul>{COMMANDS.map(renderCommand)}</ul>
-
       <pre>{session && JSON.stringify({session}, null, 2)}</pre>
-
       <pre>{JSON.stringify({currentUser}, null, 2)}</pre>
       <Modal show={!!modal} closeModal={closeModal}>
         {renderModal()}

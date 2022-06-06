@@ -143,7 +143,6 @@ export function ClientContextProvider({children}) {
   const createClient = useCallback(async () => {
     try {
       setIsInitializing(true)
-      // const {client} = await fcl.config.get("wc.adapter")
       const fclWcAdaptor = await fclWC.init(process.env.NEXT_PUBLIC_PROJECT_ID)
       fcl.config.put("wc.adapter", fclWcAdaptor)
       setClient(fclWcAdaptor.client)

@@ -1,6 +1,5 @@
 import {useState, useEffect} from "react"
 import useCurrentUser from "../hooks/use-current-user"
-import useConfig from "../hooks/use-config"
 import Header from "../components/Header"
 import Modal from "../components/Modal"
 import PairingModal from "../components/PairingModal"
@@ -9,7 +8,6 @@ import RequestModal from "../components/RequestModal"
 import {COMMANDS} from "../cmds"
 import {useJsonRpc} from "../contexts/JsonRpcContext"
 import {useWalletConnectClient} from "../contexts/ClientContext"
-import "../flow/config"
 
 const renderCommand = d => {
   return (
@@ -35,7 +33,6 @@ export default function Home() {
   const {ping, isRpcRequestPending, rpcResult} = useJsonRpc()
 
   const currentUser = useCurrentUser()
-  const config = useConfig()
 
   useEffect(() => {
     require("../decorate")

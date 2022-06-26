@@ -46,13 +46,14 @@ const SActiveSession = styled(SActiveAccount)`
 
 const Header = props => {
   const {ping, disconnect, session} = props
+  console.log('session ->', session)
   return (
     <SHeader {...props}>
       {session ? (
         <>
           <SActiveSession>
             <p>{`Connected to`}</p>
-            <p>{session.peer.metadata.name}</p>
+            <p>{session.peer?.metadata?.name}</p>
           </SActiveSession>
           <SHeaderActions>
             <Button outline color='black' onClick={ping}>

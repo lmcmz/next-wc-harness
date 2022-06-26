@@ -9,7 +9,7 @@ import {
 
 import {DEFAULT_APP_METADATA} from "../constants"
 import * as fcl from "@onflow/fcl"
-import fclWC from "@onflow/fcl-wc"
+import fclWC from "./fcl-wc"
 
 /**
  * Context
@@ -39,7 +39,7 @@ export function ClientContextProvider({children}) {
 
   const onSessionConnected = useCallback(async _session => {
     setSession(_session)
-    setAccounts(_session.state.accounts)
+    // setAccounts(_session.state.accounts)
     console.log("Session connected", _session)
   }, [])
 
@@ -49,26 +49,32 @@ export function ClientContextProvider({children}) {
         throw new Error("WalletConnect is not initialized")
       }
       try {
-        const session = await client.connect({
+        const { uri, approval } = await client.connect({
           metadata: DEFAULT_APP_METADATA,
           pairing,
-          permissions: {
-            blockchain: {
-              chains: ["flow:testnet"],
-            },
-            jsonrpc: {
+          requiredNamespaces: {
+            flow: {
               methods: ["flow_signMessage", "flow_authz", "flow_authn"],
+              chains: ["flow:testnet"],
+              events: ["chainChanged", "accountsChanged"]
             },
           },
         })
 
+        if (uri) {
+          fclWC.QRCodeModal.open(uri, () => {
+            console.log("EVENT", "QR Code Modal closed")
+          })
+        }
+
+        const session = await approval();
         onSessionConnected(session)
         fclWC.QRCodeModal.close()
       } catch (e) {
         console.error(e)
+      } finally {
+        fclWC.QRCodeModal.close()
       }
-
-      fclWC.QRCodeModal.close()
     },
     [client, onSessionConnected]
   )
@@ -92,33 +98,53 @@ export function ClientContextProvider({children}) {
         throw new Error("WalletConnect is not initialized")
       }
 
-      _client.on(fclWC.CLIENT_EVENTS.pairing.proposal, async proposal => {
-        const {uri} = proposal.signal.params
-        console.log("EVENT", "QR Code Modal open")
-        fclWC.QRCodeModal.open(uri, () => {
-          console.log("EVENT", "QR Code Modal closed")
-        })
-      })
+      // _client.on(fclWC.CLIENT_EVENTS.pairing.proposal, async proposal => {
+      //   const {uri} = proposal.signal.params
+      //   console.log("EVENT", "QR Code Modal open")
+      //   fclWC.QRCodeModal.open(uri, () => {
+      //     console.log("EVENT", "QR Code Modal closed")
+      //   })
+      // })
 
-      _client.on(fclWC.CLIENT_EVENTS.pairing.created, async () => {
-        console.log("PAIRING EVENT", "pairing_updated")
-        setPairings(_client.pairing.topics)
-      })
+      // _client.on(fclWC.CLIENT_EVENTS.pairing.created, async () => {
+      //   console.log("PAIRING EVENT", "pairing_updated")
+      //   setPairings(_client.pairing.topics)
+      // })
 
-      _client.on(fclWC.CLIENT_EVENTS.session.created, updatedSession => {
-        console.log("SESSION EVENT", "session_created")
-        onSessionConnected(updatedSession)
-      })
+      // _client.on(fclWC.CLIENT_EVENTS.session.created, updatedSession => {
+      //   console.log("SESSION EVENT", "session_created")
+      //   onSessionConnected(updatedSession)
+      // })
 
-      _client.on(fclWC.CLIENT_EVENTS.session.updated, updatedSession => {
-        console.log("SESSION EVENT", "session_updated")
-        onSessionConnected(updatedSession)
-      })
+      // _client.on(fclWC.CLIENT_EVENTS.session.updated, updatedSession => {
+      //   console.log("SESSION EVENT", "session_updated")
+      //   onSessionConnected(updatedSession)
+      // })
 
-      _client.on(fclWC.CLIENT_EVENTS.session.deleted, () => {
-        console.log("SESSION EVENT", "session_deleted")
-        reset()
-      })
+      // _client.on(fclWC.CLIENT_EVENTS.session.deleted, () => {
+      //   console.log("SESSION EVENT", "session_deleted")
+      //   reset()
+      // })
+
+      _client.on("session_event", ({ event }) => {
+        console.log("SESSION EVENT", event)
+        // Handle session events, such as "chainChanged", "accountsChanged", etc.
+      });
+      
+      _client.on("session_update", ({ topic, params }) => {
+        console.log("session_update", topic, params)
+        const { namespaces } = params;
+        const _session = client.session.get(topic);
+        // Overwrite the `namespaces` of the existing session with the incoming one.
+        const updatedSession = { ..._session, namespaces };
+        // Integrate the updated session state into your dapp state.
+        onSessionUpdate(updatedSession);
+      });
+      
+      _client.on("session_delete", () => {
+        console.log("session_delete")
+        // Session was deleted -> reset the dapp state, clean up from user session, etc.
+      });
     },
     [onSessionConnected]
   )
@@ -132,10 +158,10 @@ export function ClientContextProvider({children}) {
       setPairings(_client.pairing.topics)
       if (typeof session !== "undefined") return
       // populates existing session to state (assume only the top one)
-      if (_client.session.topics.length) {
-        const _session = await _client.session.get(_client.session.topics[0])
-        onSessionConnected(_session)
-      }
+      // if (_client.session.topics.length) {
+      //   const _session = await _client.session.get(_client.session.topics[0])
+      //   onSessionConnected(_session)
+      // }
     },
     [session, onSessionConnected]
   )
@@ -143,7 +169,8 @@ export function ClientContextProvider({children}) {
   const createClient = useCallback(async () => {
     try {
       setIsInitializing(true)
-      const fclWcAdaptor = await fclWC.init(process.env.NEXT_PUBLIC_PROJECT_ID)
+      // const {client} = await fcl.config.get("wc.adapter")
+      const fclWcAdaptor = await fclWC.init("c284f5a3346da817aeca9a4e6bc7f935")
       fcl.config.put("wc.adapter", fclWcAdaptor)
       setClient(fclWcAdaptor.client)
       await _subscribeToEvents(fclWcAdaptor.client)

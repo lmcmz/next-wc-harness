@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@onflow/fcl": "file:../../fcl-js/packages/fcl",
-    "@onflow/fcl-wc": "file:../../fcl-js/packages/fcl-wc",
-    "@walletconnect/client": "^2.0.0-beta.26",
-    "@walletconnect/legacy-modal": "^2.0.0-beta.26",
+    "@onflow/fcl": "file:../fcl-js/packages/fcl",
+    "@walletconnect/legacy-modal": "^2.0.0-beta.101",
+    "@walletconnect/sign-client": "^2.0.0-beta.56",
     "@walletconnect/types": "^2.0.0-beta.26",
     "@walletconnect/utils": "^2.0.0-beta.26",
+    "better-sqlite3": "^7.5.3",
     "next": "12.1.5",
     "react": "18.0.0",
     "react-dom": "18.0.0",

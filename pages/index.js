@@ -49,10 +49,12 @@ export default function Home() {
     if (typeof client === "undefined") {
       throw new Error("WalletConnect is not initialized")
     }
+    console.log("Connect ->", client)
     // Suggest existing pairings (if any).
-    if (client.pairing.topics.length) {
-      return openPairingModal()
-    }
+    // if (client.pairing.topics.length) {
+    //   return openPairingModal()
+    // }
+    // openRequestModal()
     // If no existing pairings are available, trigger `WalletConnectClient.connect`.
     connect()
   }
